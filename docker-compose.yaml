@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  strapi:
+    image: strapi-dev
+    container_name: strapi-local
+    ports:
+      - '1337:1337'
+    environment:
+      - DATABASE_CLIENT=sqlite
+      - DATABASE_NAME=./data.db
+    volumes:
+      - ./data:/srv/app/data
+    depends_on:
+      - database
+    networks:
+      - strapi
+
+  database:
+    image: nouchka/sqlite3
+    container_name: strapi-db
+    volumes:
+      - ./data:/data
+    networks:
+      - strapi
+
+networks:
+  strapi:
+    name: Strapi
+    driver: bridge
